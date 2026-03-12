@@ -1,11 +1,14 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import RootNavigator from '@navigation/index';
+import Toast from 'react-native-toast-message';
 
 const App = () => {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontFamily: 'Poppins-Regular'}}>PJSoftTech School</Text>
-    </View>
+    <SafeAreaProvider>
+      <RootNavigator />
+      <Toast />
+    </SafeAreaProvider>
   );
 };
 
