@@ -9,36 +9,40 @@ const useAuthStore = create(set => ({
   isLoading: true,
 
   // Initialize from storage on app start
-  initAuth: () => {
-    const {token, user, role} = getSession();
-    if (token && user && role) {
-      set({
-        token,
-        user,
-        role,
-        isAuthenticated: true,
-        isLoading: false,
-      });
-    } else {
+  initAuth: async () => {
+    try {
+      const {token, user, role} = await getSession();
+      if (token && user && role) {
+        set({
+          token,
+          user,
+          role,
+          isAuthenticated: true,
+          isLoading: false,
+        });
+      } else {
+        set({isLoading: false});
+      }
+    } catch (e) {
       set({isLoading: false});
     }
   },
 
   // Login
-  login: (token, data, role) => {
-    saveSession(token, data, role);
+  login: async (token, user, role) => {
+    await saveSession(token, user, role);
     set({
       token,
-      user: data,
-      role: role.toLowerCase(),
+      user,
+      role,
       isAuthenticated: true,
       isLoading: false,
     });
   },
 
   // Logout
-  logout: () => {
-    clearSession();
+  logout: async () => {
+    await clearSession();
     set({
       token: null,
       user: null,
@@ -49,12 +53,9 @@ const useAuthStore = create(set => ({
   },
 
   // Update user data
-  updateUser: user => {
-    saveSession(
-      useAuthStore.getState().token,
-      user,
-      useAuthStore.getState().role,
-    );
+  updateUser: async user => {
+    const {token, role} = useAuthStore.getState();
+    await saveSession(token, user, role);
     set({user});
   },
 }));

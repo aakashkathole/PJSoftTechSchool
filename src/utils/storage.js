@@ -1,30 +1,18 @@
-import {MMKV} from 'react-native-mmkv';
-
-// Create storage instance
-let storage;
-
-try {
-  storage = new MMKV({
-    id: 'pjsofttech-storage',
-    encryptionKey: 'pjsofttech-secret-key',
-  });
-} catch (e) {
-  console.log('MMKV init error:', e);
-}
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Save session
-export const saveSession = (token, user, role) => {
-  storage.set('token', token);
-  storage.set('user', JSON.stringify(user));
-  storage.set('role', role);
+export const saveSession = async (token, user, role) => {
+  await AsyncStorage.setItem('token', token);
+  await AsyncStorage.setItem('user', JSON.stringify(user));
+  await AsyncStorage.setItem('role', role);
 };
 
 // Get session
-export const getSession = () => {
+export const getSession = async () => {
   try {
-    const token = storage.getString('token');
-    const user = storage.getString('user');
-    const role = storage.getString('role');
+    const token = await AsyncStorage.getItem('token');
+    const user = await AsyncStorage.getItem('user');
+    const role = await AsyncStorage.getItem('role');
     return {
       token: token || null,
       user: user ? JSON.parse(user) : null,
@@ -36,20 +24,18 @@ export const getSession = () => {
 };
 
 // Clear session
-export const clearSession = () => {
-  storage.delete('token');
-  storage.delete('user');
-  storage.delete('role');
+export const clearSession = async () => {
+  await AsyncStorage.removeItem('token');
+  await AsyncStorage.removeItem('user');
+  await AsyncStorage.removeItem('role');
 };
 
 // Check if logged in
-export const isLoggedIn = () => {
+export const isLoggedIn = async () => {
   try {
-    const token = storage.getString('token');
+    const token = await AsyncStorage.getItem('token');
     return !!token;
   } catch (e) {
     return false;
   }
 };
-
-export {storage};
