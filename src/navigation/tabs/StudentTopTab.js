@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import MatIcon from '@react-native-vector-icons/material-design-icons';
 
@@ -40,6 +40,22 @@ const tabs = [
   },
 ];
 
+// App Bar
+const AppBar = ({screenName, onHamburgerPress}) => {
+  return (
+    <View style={styles.appBar}>
+      <TouchableOpacity
+        onPress={onHamburgerPress}
+        style={styles.hamburger}
+        activeOpacity={0.7}>
+        <MatIcon name="menu" size={18} color="#202124" />
+      </TouchableOpacity>
+      <Text style={styles.screenName}>{screenName}</Text>
+    </View>
+  );
+};
+
+// Tab Bar
 const CustomTabBar = ({state, navigation}) => {
   return (
     <View style={styles.tabBar}>
@@ -64,9 +80,12 @@ const CustomTabBar = ({state, navigation}) => {
             onPress={onPress}
             style={styles.tabItem}
             activeOpacity={0.7}>
-            <View style={[styles.iconWrapper, isFocused && styles.iconWrapperActive,
-                {width: 44, height: 44, borderRadius: 22, overflow: 'hidden'}
-            ]}>
+            <View
+              style={[
+                styles.iconWrapper,
+                isFocused && styles.iconWrapperActive,
+                {width: 44, height: 44, borderRadius: 22, overflow: 'hidden'},
+              ]}>
               <MatIcon
                 name={isFocused ? tab.activeIcon : tab.inactiveIcon}
                 size={26}
@@ -81,6 +100,30 @@ const CustomTabBar = ({state, navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  // App Bar
+  appBar: {
+    height: 56,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#7b68ee',
+    paddingHorizontal: 8,
+    elevation: 0,
+  },
+  hamburger: {
+    borderWidth: 0.5,
+    padding: 8,
+    borderRadius: 20,
+  },
+  screenName: {
+    fontSize: 16,
+    fontFamily: 'Poppins-SemiBold',
+    color: '#202124',
+    marginLeft: 8,
+  },
+
+  // Tab Bar
   tabBar: {
     flexDirection: 'row',
     backgroundColor: '#ffffff',
@@ -104,19 +147,42 @@ const styles = StyleSheet.create({
 });
 
 export default function StudentTopTab() {
+  const [currentScreen, setCurrentScreen] = React.useState('Home');
+
+  const handleHamburger = () => {
+    // will connect to drawer later
+    console.log('hamburger pressed');
+  };
+
   return (
-    <Tab.Navigator
-      tabBarPosition="bottom"
-      tabBar={props => <CustomTabBar {...props} />}
-      screenOptions={{
-        swipeEnabled: true,
-        animationEnabled: true,
-      }}>
-      <Tab.Screen name="Home" component={StudentDashboard} />
-      <Tab.Screen name="Attendance" component={StudentAttendance} />
-      <Tab.Screen name="Assignments" component={StudentAssignments} />
-      <Tab.Screen name="TimeTable" component={StudentTimeTable} />
-      <Tab.Screen name="Profile" component={StudentProfile} />
-    </Tab.Navigator>
+    <View style={{flex: 1}}>
+      {/* App Bar */}
+      <AppBar
+        screenName={currentScreen}
+        onHamburgerPress={handleHamburger}
+      />
+
+      {/* Tab Navigator */}
+      <Tab.Navigator
+        tabBarPosition="bottom"
+        tabBar={props => <CustomTabBar {...props} />}
+        screenOptions={{
+          swipeEnabled: true,
+          animationEnabled: true,
+        }}
+        screenListeners={{
+          state: e => {
+            const index = e.data.state.index;
+            const name = e.data.state.routes[index].name;
+            setCurrentScreen(name);
+          },
+        }}>
+        <Tab.Screen name="Home" component={StudentDashboard} />
+        <Tab.Screen name="Attendance" component={StudentAttendance} />
+        <Tab.Screen name="Assignments" component={StudentAssignments} />
+        <Tab.Screen name="TimeTable" component={StudentTimeTable} />
+        <Tab.Screen name="Profile" component={StudentProfile} />
+      </Tab.Navigator>
+    </View>
   );
 }
