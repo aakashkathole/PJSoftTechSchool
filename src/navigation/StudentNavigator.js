@@ -1,13 +1,13 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import StudentTopTab from '@navigation/tabs/StudentTopTab';
+import StudentDrawer from '@navigation/StudentDrawer';
 
 const Stack = createNativeStackNavigator();
 
 const StudentNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="StudentTopTab" component={StudentTopTab} />
+      <Stack.Screen name="StudentDrawer" component={StudentDrawer} />
     </Stack.Navigator>
   );
 };

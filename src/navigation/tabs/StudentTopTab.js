@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import MatIcon from '@react-native-vector-icons/material-design-icons';
+import {useNavigation} from '@react-navigation/native';
 
 // Screens
 import StudentDashboard from '@screens/student/StudentDashboard';
@@ -112,7 +113,6 @@ const styles = StyleSheet.create({
     elevation: 0,
   },
   hamburger: {
-    borderWidth: 0.5,
     padding: 8,
     borderRadius: 20,
   },
@@ -149,9 +149,10 @@ const styles = StyleSheet.create({
 export default function StudentTopTab() {
   const [currentScreen, setCurrentScreen] = React.useState('Home');
 
+  const navigation = useNavigation();
+
   const handleHamburger = () => {
-    // will connect to drawer later
-    console.log('hamburger pressed');
+    navigation.openDrawer();
   };
 
   return (
