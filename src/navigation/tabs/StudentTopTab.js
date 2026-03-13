@@ -64,11 +64,13 @@ const CustomTabBar = ({state, navigation}) => {
             onPress={onPress}
             style={styles.tabItem}
             activeOpacity={0.7}>
-            <View style={[styles.iconWrapper, isFocused && styles.iconWrapperActive]}>
+            <View style={[styles.iconWrapper, isFocused && styles.iconWrapperActive,
+                {width: 44, height: 44, borderRadius: 22, overflow: 'hidden'}
+            ]}>
               <MatIcon
                 name={isFocused ? tab.activeIcon : tab.inactiveIcon}
                 size={26}
-                color={isFocused ? '#34a853' : '#8e8e8e'}
+                color={isFocused ? '#000' : '#8e8e8e'}
               />
             </View>
           </TouchableOpacity>
@@ -93,11 +95,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconWrapper: {
-    padding: 6,
-    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   iconWrapperActive: {
-    backgroundColor: '#e6f4ea',
+    backgroundColor: '#efefef',
   },
 });
 
