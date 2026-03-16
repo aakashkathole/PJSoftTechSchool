@@ -1,5 +1,5 @@
 import {create} from 'zustand';
-import {saveSession, clearSession, getSession} from '@utils/storage';
+import {saveSession, clearSession, getSessionAsync} from '@utils/storage';
 
 const useAuthStore = create(set => ({
   user: null,
@@ -11,7 +11,7 @@ const useAuthStore = create(set => ({
   // Initialize from storage on app start
   initAuth: async () => {
     try {
-      const {token, user, role} = await getSession();
+      const {token, user, role} = await getSessionAsync();
       if (token && user && role) {
         set({
           token,
