@@ -1,4 +1,4 @@
-package com.pjsofttechschool
+package com.pjsofttech.schoolteacherapp
 
 import android.app.Application
 import com.facebook.react.PackageList

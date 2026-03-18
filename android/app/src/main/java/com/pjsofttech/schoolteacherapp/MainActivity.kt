@@ -1,4 +1,4 @@
-package com.pjsofttechschool
+package com.pjsofttech.schoolteacherapp
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
