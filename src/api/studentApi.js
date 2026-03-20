@@ -24,4 +24,34 @@ export const studentApi = {
       throw new Error(message);
     }
   },
+
+  // Get student attendance
+  getAttendance: async (studentId, filter, startDate, endDate, page = 0, size = 25) => {
+    try {
+      if (!studentId) {
+        throw new Error('Student ID is missing.');
+      }
+      if (!filter || !startDate || !endDate) {
+        throw new Error('Filter, startDate and endDate are required.');
+      }
+      const response = await api.get('/getAllAttendaceByStudentId', {
+        params: {
+          studentId,
+          page,
+          size,
+          filter,
+          startDate,
+          endDate,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        'Failed to fetch attendance.';
+        console.error(`[StudentApi] getAttendance failed: ${message}`);
+        throw new Error(message);
+    }
+  },
 };
